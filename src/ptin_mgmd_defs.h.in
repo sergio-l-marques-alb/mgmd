@@ -1,0 +1,246 @@
+/*********************************************************************
+*
+* (C) Copyright PT Inovação S.A. 2013-2013
+*
+**********************************************************************
+*
+* @create    21/10/2013
+*
+* @author    Daniel Filipe Figueira
+* @author    Marcio Daniel Melo
+*
+**********************************************************************/
+#ifndef _PTIN_MGMD_DEFS_H
+#define _PTIN_MGMD_DEFS_H
+
+/***************************************
+ * Defines/Enums                       *
+ ***************************************/
+#define PTIN_NULL     0
+#define PTIN_NULLPTR  ((void *)0)
+
+#ifndef TRUE
+   #define TRUE           1
+   #define FALSE          0
+   #define BOOL           unsigned char
+#endif
+
+#define PTIN_MGMD_AF_INET  1
+#define PTIN_MGMD_AF_INET6 2
+
+#include <stdint.h>
+
+#ifndef char8
+  typedef char               char8;
+#endif
+#ifndef uchar8
+  typedef unsigned char      uchar8;
+#endif
+#ifndef int8
+  typedef signed char        int8;
+#endif
+#ifndef uint8
+  typedef unsigned char      uint8;
+#endif
+#ifndef short16
+  typedef short              short16;
+#endif
+#ifndef ushort16
+  typedef unsigned short     ushort16;
+#endif
+#ifndef long32
+  typedef long               long32;
+#endif
+#ifndef ulong32
+  typedef unsigned long      ulong32;
+#endif
+#ifndef uint64
+  typedef unsigned long long uint64;
+#endif
+#ifndef int64
+  typedef signed long long   int64;
+#endif
+#ifndef int32
+  typedef int                int32;
+#endif
+#ifndef uint32
+  typedef unsigned int       uint32;
+#endif
+#ifndef int16
+  typedef short              int16;
+#endif
+#ifndef uint16
+  typedef unsigned short     uint16;
+#endif
+#ifndef double64
+  typedef double             double64;
+#endif
+
+#ifndef min
+  #define min(x, y) (((x) < (y)) ? (x) : (y))
+#endif
+#ifndef max
+  #define max(x, y) (((x) < (y)) ? (y) : (x))
+#endif
+
+#ifndef _UNUSED_
+  #define _UNUSED_(x) (void) (x)
+#endif
+
+#define PTIN_MGMD_MANAGEMENT_CLIENT_ID                 (uint32)-1
+
+#define PTIN_MGMD_ROOT_PORT                            0
+
+#define PTIN_MGMD_SERVICE_ID                          (uint32)-1 
+                                                    
+#define PTIN_MGMD_CTRL_TIMEOUT                         @PTIN_MGMD_PLATFORM_CTRL_TIMEOUT@
+                                                      
+#define PTIN_MGMD_MSGQUEUE_SIZE                        @PTIN_MGMD_PLATFORM_MSGQUEUE_SIZE@
+                                                      
+#define PTIN_MGMD_STACK_SIZE                           @PTIN_MGMD_PLATFORM_STACK_SIZE@
+#define PTIN_MGMD_MAX_CHANNELS                         @PTIN_MGMD_PLATFORM_MAX_CHANNELS@  
+#define PTIN_MGMD_MAX_WHITELIST                        @PTIN_MGMD_PLATFORM_MAX_WHITELIST@  
+#define PTIN_MGMD_MAX_GROUPS                           PTIN_MGMD_MAX_CHANNELS  
+#define PTIN_MGMD_MAX_SOURCES                          16 /*(PTIN_MGMD_MAX_CHANNELS * (PTIN_MGMD_MAX_PORTS+1) * 1)/8 On average 1 Sources per Port per Multicast Group*/
+#define PTIN_MGMD_MAX_CLIENTS                          @PTIN_MGMD_PLATFORM_MAX_CLIENTS@ 
+#define PTIN_MGMD_MAX_PORTS                            @PTIN_MGMD_PLATFORM_MAX_PORTS@   
+#define PTIN_MGMD_MAX_PORT_ID                          @PTIN_MGMD_PLATFORM_MAX_PORT_ID@   
+#define PTIN_MGMD_MAX_SERVICES                         @PTIN_MGMD_PLATFORM_MAX_SERVICES@    
+#define PTIN_MGMD_MAX_SERVICE_ID                       @PTIN_MGMD_PLATFORM_MAX_SERVICE_ID@
+#define PTIN_MGMD_MAX_FRAME_SIZE                       @PTIN_MGMD_PLATFORM_MAX_FRAME_SIZE@
+#define PTIN_MGMD_ADMISSION_CONTROL_SUPPORT            @PTIN_MGMD_PLATFORM_ADMISSION_CONTROL_SUPPORT@
+#define PTIN_MGMD_ROOT_PORT_IS_ON_MAX_PORT_ID          @PTIN_MGMD_PLATFORM_ROOT_PORT_IS_ON_MAX_PORT_ID@
+#define PTIN_MGMD_SVN_VERSION                          "@PTIN_MGMD_PLATFORM_SVN_VERSION@"
+#define PTIN_MGMD_SVN_RELEASE                          "@PTIN_MGMD_PLATFORM_SVN_RELEASE@"
+#define PTIN_MGMD_SVN_PACKAGE                          "@PTIN_MGMD_PLATFORM_SVN_PACKAGE@"
+
+#define PTIN_MGMD_MAX_GROUP_RECORDS                    (PTIN_MGMD_MAX_GROUPS * 2)   /*Allow and Block Record at the same time*/
+#define PTIN_MGMD_MAX_SOURCE_RECORDS                   (PTIN_MGMD_MAX_GROUPS * 10)  /*On average 10 Sources per Group Record*/
+#define PTIN_MGMD_MAX_GENERAL_QUERIES                  max (PTIN_MGMD_MAX_SERVICES, PTIN_MGMD_MAX_PORTS*PTIN_MGMD_MAX_CLIENTS)
+#define PTIN_MGMD_MAX_GROUP_SPECIFIC_QUERIES           PTIN_MGMD_MAX_GROUPS  
+#define PTIN_MGMD_MAX_GROUP_SOURCE_SPECIFIC_QUERIES    (PTIN_MGMD_MAX_GROUP_SPECIFIC_QUERIES * 1) /*On average 1 Sources per Group Specific Query */
+#define PTIN_MGMD_MAX_ROOT_FIFO_CLIENTS                (PTIN_MGMD_MAX_GROUPS+PTIN_MGMD_MAX_SOURCES)
+#define PTIN_MGMD_MAX_LEAF_FIFO_CLIENTS                (PTIN_MGMD_MAX_PORTS*PTIN_MGMD_MAX_GROUPS+PTIN_MGMD_MAX_SOURCES)
+#define PTIN_MGMD_MAX_CLIENT_ID                        (PTIN_MGMD_MAX_CLIENTS-1) /*ClientId=0 is a valid Id*/
+
+#define PTIN_MGMD_DISABLE 0
+#define PTIN_MGMD_ENABLE 1
+
+#define PTIN_MGMD_MAX_CB_INSTANCES 1 //Only IGMP is supported, if MLD is supported set this value to 2
+
+#ifdef PTIN_MGMD_GENERAL_QUERY_PER_INTERFACE  
+#define PTIN_MAX_QUERIES       1//For the moment we consider that we have a a Global Query per System and not Query per Interface, therefore 
+#endif
+#define PTIN_MGMD_MAX_LEAF_PORTS    16/*PON/VDSL/EThernet*/
+#define PTIN_MGMD_MAX_ROOT_PORTS    1 /*EThernet*/
+
+/* Number of entries per mask */
+#define PTIN_MGMD_CLIENT_MASK_UNIT   (sizeof(uint8) * 8)
+
+#define PTIN_MGMD_CLIENT_BITMAP_SIZE ((PTIN_MGMD_MAX_CLIENTS-1)/PTIN_MGMD_CLIENT_MASK_UNIT+1)  /* Maximum number of Clients per Leaf Port per source */
+
+/* Client Mask*/
+typedef struct
+{
+  uchar8   value[PTIN_MGMD_CLIENT_BITMAP_SIZE];
+} PTIN_MGMD_CLIENT_MASK_t;
+
+typedef enum
+{
+  PTIN_MGMD_PORT_TYPE_UNKNOWN=0,
+  PTIN_MGMD_PORT_TYPE_LEAF,
+  PTIN_MGMD_PORT_TYPE_ROOT,
+  PTIN_MGMD_PORT_TYPE_MAX//This field should be the last one. Please do not remove it
+} ptin_mgmd_port_type_t;
+
+
+/* Number of entries per mask byte */
+#define PTIN_MGMD_PORT_MASK_UNIT               (sizeof(uint8) * 8)
+
+/* Number of bytes in mask */
+#define PTIN_MGMD_PORT_MASK_INDICES   ((PTIN_MGMD_MAX_PORT_ID) / PTIN_MGMD_PORT_MASK_UNIT + 1)
+
+/* Port Mask*/
+typedef struct
+{
+  uchar8   value[PTIN_MGMD_PORT_MASK_INDICES];
+} PTIN_MGMD_PORT_MASK_t;
+
+//Return Codes
+typedef enum
+{
+  SUCCESS = 0,
+  FAILURE,
+  ERROR,
+  NOT_IMPLEMENTED_YET,
+  NOT_SUPPORTED,
+  NOT_EXIST,
+  ALREADY_CONFIGURED,
+  TABLE_IS_FULL,
+  TABLE_IS_EMPTY,
+  REQUEST_DENIED,
+  ASYNCH_RESPONSE,
+  ADDR_INUSE,
+  NO_VALUE,
+  NO_MEMORY,
+  DEPENDENCY_NOT_MET,
+} RC_t;
+
+#define PTIN_MGMD_CTRL_FILTERMODE_INCLUDE 0
+#define PTIN_MGMD_CTRL_FILTERMODE_EXCLUDE 1
+
+#define PTIN_MGMD_CTRL_GROUPTYPE_DYNAMIC 0
+#define PTIN_MGMD_CTRL_GROUPTYPE_STATIC  1
+
+#define MGMD_LOGGER_LIBLOGGER 0
+#define MGMD_LOGGER_INTERNAL  1
+#define MGMD_LOGGER_DYNAMIC   2
+
+#define MGMD_LOGGER @MGMD_LOGGER@
+
+#if (MGMD_LOGGER==MGMD_LOGGER_INTERNAL || MGMD_LOGGER==MGMD_LOGGER_DYNAMIC)
+	/* Context
+	 * NOTE: new items must be added to default config (log_cfg[])* 
+	 *       and to log_ctx_str[] !!! */
+	typedef enum {
+	    PTIN_MGMD_LOG_CTX_LOGGER = 0,       /* Used to log logger config functions */
+	    PTIN_MGMD_LOG_CTX_PTIN_MSG,
+	    PTIN_MGMD_LOG_CTX_PTIN_IGMP,
+	    PTIN_MGMD_LOG_CTX_PTIN_TIMER,
+	    PTIN_MGMD_LOG_CTX_PTIN_FIFO,
+	    PTIN_MGMD_LOG_CTX_STARTUP,
+	    /* Last element */
+	    PTIN_MGMD_LOG_CONTEXT_LAST,
+	} ptin_mgmd_log_context_t;
+#elif (MGMD_LOGGER==MGMD_LOGGER_LIBLOGGER)
+
+        //#include <nbtools/logger.h>
+
+	extern uint32_t PTIN_MGMD_LOG_CTX_PTIN_MSG;
+	extern uint32_t PTIN_MGMD_LOG_CTX_PTIN_IGMP;
+	extern uint32_t PTIN_MGMD_LOG_CTX_PTIN_TIMER;
+	extern uint32_t PTIN_MGMD_LOG_CTX_PTIN_FIFO;
+	extern uint32_t PTIN_MGMD_LOG_CTX_STARTUP;
+
+	void ptin_mgmd_liblogger_init(uint32_t file_id);
+#endif
+
+/* Severity */
+typedef enum {
+    PTIN_MGMD_LOG_OFF = 0,        /* Turn of any print */
+    PTIN_MGMD_LOG_SEV_PRINT,      /* Always print */
+    PTIN_MGMD_LOG_SEV_FATAL,
+    PTIN_MGMD_LOG_SEV_CRITICAL,
+    PTIN_MGMD_LOG_SEV_ERROR,
+    PTIN_MGMD_LOG_SEV_WARNING,
+    PTIN_MGMD_LOG_SEV_NOTICE,
+    PTIN_MGMD_LOG_SEV_INFO,
+    PTIN_MGMD_LOG_SEV_DEBUG,
+    PTIN_MGMD_LOG_SEV_TRACE,
+    /* Last element */
+    PTIN_MGMD_LOG_SEV_LAST,
+} ptin_mgmd_log_severity_t;
+
+#define PTIN_MGMD_MAX_TIMESTAMP_LEN       24  /* Timestamp max length*/
+
+#endif //_PTIN_MGMD_DEFS_H

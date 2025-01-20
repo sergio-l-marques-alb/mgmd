@@ -1,0 +1,21 @@
+*** Verfy if the build_dir build_dir link has been created in this directory
+
+* Create symbolic link to build_dir:
+```sh
+cd trunk
+ln -s /home/olt_shared/oltosng/build_dir_"version" build_dir
+```
+*** Obs: when checking out a branch version, build_dir should be followed by its respective numbering. 
+*** eg: for branch 4.16 the command becomes "ln -s /home/olt_shared/oltosng/build_dir_4.16 build_dir".
+
+* MGMD compilation
+```sh
+cd trunk
+sh ./mgmd_compile.sh <<card>> 
+```
+
+* Create package and MGMD compilation
+```sh
+cd trunk
+sh ./create package.sh <<card>> 
+```

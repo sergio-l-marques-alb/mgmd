@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: mgmd
+Description: Multicast Group Membership Discovery
+URL: www.ptinovacao.pt 
+Version: @VERSION@
+Requires: 
+Libs: -L@RFS_PATH@${libdir} @MGMD_LIBS@ -lmgmd
+Cflags: @MGMD_CFLAGS@ -I@RFS_PATH@${includedir}/mgmd 
+
